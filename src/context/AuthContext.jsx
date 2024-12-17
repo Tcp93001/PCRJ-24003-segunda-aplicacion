@@ -7,7 +7,10 @@ const AuthContext = createContext({
   onLogin: () => {}
 })
 
+export const BASE_URL = 'https://react-http-prc-24003-default-rtdb.firebaseio.com/'
+
 export function AuthContextProvider(props) {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -18,9 +21,30 @@ export function AuthContextProvider(props) {
     }
   }, []);
 
-  const loginHandler = () => {
-    localStorage.setItem("isLoggedIn", "true");
-    setIsLoggedIn(true);
+  const fetchUser = async (email) => {
+    const url = `${BASE_URL}users.json?orderBy="email"&equalTo="${email}"`;
+    const response = await fetch(url);
+
+    if(!response.ok) throw new Error('Algo salio mal...')
+
+    return response.json();
+  };
+
+  const loginHandler = async (email) => {
+    try {
+      const user = await fetchUser(email)
+      // que pasa si el usuario llega vacio (no existe)
+      const userId = Object.keys(user)[0]
+
+      if (!userId) throw new Error('Correo Inválido')
+
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userId", userId);
+      setIsLoggedIn(true);
+
+    } catch (error) {
+      console.log('error!!', error.message)
+    }
   };
 
   const logoutHandler = () => {
