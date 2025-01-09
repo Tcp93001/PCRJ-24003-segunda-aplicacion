@@ -34,7 +34,6 @@ function Login() {
   const { onLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log('location >>',location)
 
   let from = location.pathname || '/';
 

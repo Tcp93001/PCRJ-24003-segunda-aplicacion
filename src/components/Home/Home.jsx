@@ -7,6 +7,7 @@ import { BASE_URL } from "../../context/AuthContext";
 
 function Home() {
   const { userId } = useParams();
+  console.log('params', useParams())
   const [user, setUser] = useState({
     first_name: '',
     last_name: '',

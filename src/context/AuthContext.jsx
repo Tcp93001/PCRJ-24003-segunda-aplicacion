@@ -15,8 +15,8 @@ export function AuthContextProvider(props) {
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isLoggedIn");
-
     if (isAuthenticated === "true") {
+      console.log('loggin', isAuthenticated)
       setIsLoggedIn(true);
     }
   }, []);
@@ -34,7 +34,9 @@ export function AuthContextProvider(props) {
     try {
       const user = await fetchUser(email)
       // que pasa si el usuario llega vacio (no existe)
+      console.log('usuario', user)
       const userId = Object.keys(user)[0]
+      console.log('userId', userId)
 
       if (!userId) throw new Error('Correo Inválido')
 
